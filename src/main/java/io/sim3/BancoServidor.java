@@ -8,6 +8,10 @@ import org.python.modules.thread.thread;
 
 import java.net.InetAddress;
 //import java.net.HostAddress;
+
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+
 public class BancoServidor extends Thread{
     private static Conta contaBanco;
    

@@ -11,6 +11,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+
 public class DriverCliente extends Thread{//carro
     private Conta contaDriver;
     //private Conta contaDriver = new Conta();

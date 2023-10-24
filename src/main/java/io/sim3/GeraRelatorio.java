@@ -138,7 +138,7 @@ public class GeraRelatorio extends Thread{
             
             
             // Salve o arquivo do Excel
-            try (FileOutputStream outputStream = new FileOutputStream("Exemplo1071.xlsx")) {//O gráfico 13 deu certo!!!
+            try (FileOutputStream outputStream = new FileOutputStream("Exemplo100.xlsx")) {//O gráfico 13 deu certo!!!
                 workbook.write(outputStream);
             } catch (IOException e) {
                 e.printStackTrace();

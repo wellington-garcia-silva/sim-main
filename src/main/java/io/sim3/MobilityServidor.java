@@ -10,6 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 //import org.junit.jupiter.api.Assertions;
 
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+
 
 public class MobilityServidor extends Thread{
 
