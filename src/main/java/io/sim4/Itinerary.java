@@ -1,4 +1,4 @@
-package io.sim;
+package io.sim4;
 
 import java.io.IOException;
 
@@ -18,11 +18,12 @@ public class Itinerary {
 	private String uriItineraryXML;
 	private String[] itinerary;
 	private String idItinerary;
+	private String edge1;
 
-	/////////////
+	//////////////
 	private String ponto;
 
-	public Itinerary(String _uriRoutesXML, String _idRoute) {//W: pega o arquivo (rota, id da rota)
+	public Itinerary(String _uriRoutesXML, String _idRoute,int edgeIndex) {//W: pega o arquivo (rota, id da rota)
 		this.uriItineraryXML = _uriRoutesXML;
 		this.idItinerary = _idRoute;
 		try {
@@ -37,17 +38,25 @@ public class Itinerary {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element elem = (Element) nNode;
 					String idRouteAux = this.idItinerary;
-					Node node = elem.getElementsByTagName("route").item(i);//antes era 0 no lugar de i
+					Node node = elem.getElementsByTagName("route").item(0);
 					Element edges = (Element) node;
 
 					// Extract the specified edge based on the edge index
+					//String edge = edges.getChildNodes().item(edgeIndex).getTextContent();
+					//edge1  = edge;
 					this.itinerary = new String[] { idRouteAux, edges.getAttribute("edges") };
 
-					
-
+					///////Modificado
+					ponto = edges.getAttribute(idRouteAux);
+					if(ponto.equals("341671964#10")){
+						//return timestanp e speed do momento no inicio
+					}
+					if(ponto.equals("-144479140")){
+						//return timestanp e speed do final
+					}
 				}
 			}
-            
+
 			Thread.sleep(100);//W: aguarda
 			this.on = true; //W: retorna verdadeiro so se 
 
@@ -80,5 +89,8 @@ public class Itinerary {
 
 	public boolean isOn() {
 		return this.on;
+	}
+	public String ponto(){
+		return this.ponto;
 	}
 }

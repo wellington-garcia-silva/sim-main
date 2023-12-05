@@ -1,18 +1,22 @@
-package io.sim;
+package io.sim4;
 
-import de.tudresden.sumo.cmd.Vehicle;
 import java.util.ArrayList;
 
-import it.polito.appeal.traci.SumoTraciConnection;
+//import org.matsim.vehicles.VehicleUtils;
+
+import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoPosition2D;
+import it.polito.appeal.traci.SumoTraciConnection;
 
 public class Auto extends Thread {
 
+	public DrivingData r;
 	private String idAuto;
 	private SumoColor colorAuto;
 	private String driverID;
 	private SumoTraciConnection sumo;
+	private SumoPosition2D s2d;
 
 	private boolean on_off;
 	private long acquisitionRate;
@@ -21,17 +25,6 @@ public class Auto extends Thread {
 	private double fuelPrice; 		// price in liters
 	private int personCapacity;		// the total number of persons that can ride in this vehicle
 	private int personNumber;		// the total number of persons which are riding in this vehicle
-	//private DrivingData r1;
-	/*private timestamp;
-	private idCar;
-	private idRoute;
-	private speed;
-	private distance;
-	private fuelConsuption;
-	private fuelType;
-	private co2emission;
-	private longitude;
-	private latitude;*/
 
 	private String autoID;//vindos de DRIVINGDATA
 	//private String driverID;
@@ -62,7 +55,6 @@ public class Auto extends Thread {
 		this.driverID = _driverID;
 		this.sumo = _sumo;
 		this.acquisitionRate = _acquisitionRate;
-		
 		
 		if((_fuelType < 0) || (_fuelType > 4)) {
 			this.fuelType = 4;
@@ -102,14 +94,18 @@ public class Auto extends Thread {
 			if (!this.getSumo().isClosed()) {
 				SumoPosition2D sumoPosition2D;
 				sumoPosition2D = (SumoPosition2D) sumo.do_job_get(Vehicle.getPosition(this.idAuto));
-
+				//S2d(sumoPosition2D);
+				System.out.println("Times: " + System.currentTimeMillis());
 				System.out.println("AutoID: " + this.getIdAuto());
 				System.out.println("RoadID: " + (String) this.sumo.do_job_get(Vehicle.getRoadID(this.idAuto)));
 				System.out.println("RouteID: " + (String) this.sumo.do_job_get(Vehicle.getRouteID(this.idAuto)));
 				System.out.println("RouteIndex: " + this.sumo.do_job_get(Vehicle.getRouteIndex(this.idAuto)));
 
-				System.out.println("lllll " + this.sumo.do_job_get(Vehicle.getRouteIndex(this.idAuto)));
+				this.roadIDSUMO =  (String) this.sumo.do_job_get(Vehicle.getRoadID(this.idAuto));
 
+				this.speed =  (double) sumo.do_job_get(Vehicle.getSpeed(this.idAuto));
+				this.timeStamp = System.currentTimeMillis();
+			
 				
 				DrivingData _repport = new DrivingData(
 
@@ -145,10 +141,19 @@ public class Auto extends Thread {
 						// the total number of persons which are riding in this vehicle
 
 				);
-				DrivingData r = _repport;
+				
+				r = _repport;
+				CriarPlanilhaExcel c = new CriarPlanilhaExcel();
+				c.createSheet("nome");
+				c.updateSheetCar(_repport,"exemplo1.xlsx","nome");
+					
 
-				this.speed=_repport.getSpeed();
-				this.timeStamp=_repport.getTimeStamp();
+				//speed =  (double) sumo.do_job_get(Vehicle.getSpeed(this.idAuto));
+				//timeStamp = System.currentTimeMillis();
+
+				
+				//this.speed=_repport.getSpeed();
+				//this.timeStamp=_repport.getTimeStamp();
 				this.autoID=_repport.getAutoID();
 				//this.distance=_repport.getDistance();
 				this.fuelConsumption=_repport.getFuelConsumption();
@@ -156,8 +161,6 @@ public class Auto extends Thread {
 				this.co2Emission=_repport.getCo2Emission();
 				this.x_Position=_repport.getX_Position();
 				this.y_Position=_repport.getY_Position();
-
-
 				
 
 				// Criar relat�rio auditoria / alertas
@@ -173,6 +176,7 @@ public class Auto extends Thread {
 				//System.out.println("X=" + this.drivingRepport.get(this.drivingRepport.size() - 1).getX_Position() + ", "
 				//		+ "Y=" + this.drivingRepport.get(this.drivingRepport.size() - 1).getY_Position());
 				System.out.println("speed = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getSpeed());
+				//System.out.println("speet = " + this.drivingRepport.get(this.drivingRepport.size()).getSpeed());
 				System.out.println("odometer = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getOdometer());
 				System.out.println("Fuel Consumption = "
 						+ this.drivingRepport.get(this.drivingRepport.size() - 1).getFuelConsumption());
@@ -206,14 +210,17 @@ public class Auto extends Thread {
 				//		"getSpeedDeviation = " + (double) sumo.do_job_get(Vehicle.getSpeedDeviation(this.idAuto)));
 				
 				
-				sumo.do_job_set(Vehicle.setSpeedMode(this.idAuto, 1));//era  0
-				sumo.do_job_set(Vehicle.setSpeed(this.idAuto, 100));//6.95
+				sumo.do_job_set(Vehicle.setSpeedMode(this.idAuto, 0));//era 0
+				sumo.do_job_set(Vehicle.setSpeed(this.idAuto, 100));//era 6.95
 
 				
-				System.out.println("getPersonNumberrrr = " + sumo.do_job_get(Vehicle.getPersonNumber(this.idAuto)));
+				System.out.println("getPersonNumber = " + sumo.do_job_get(Vehicle.getPersonNumber(this.idAuto)));
 				//System.out.println("getPersonIDList = " + sumo.do_job_get(Vehicle.getPersonIDList(this.idAuto)));
 				
-				System.out.println("***********************");
+				System.out.println("************************");
+
+				
+				
 
 			} else {
 				System.out.println("SUMO is closed...");
@@ -222,6 +229,13 @@ public class Auto extends Thread {
 			e.printStackTrace();
 		}
 	}
+
+	public DrivingData Criar(){
+		return r;
+		
+		//c.updateSheetCar(r,"exemplo1.xlsx","nome");
+	}
+
 
 	public boolean isOn_off() {
 		return this.on_off;
@@ -290,10 +304,12 @@ public class Auto extends Thread {
 	public int getPersonNumber() {
 		return this.personNumber;
 	}
-	public DrivingData mandaDrivingData(){
-
-		return null;
-	}
+	public String RetornaCar(int i){
+        //i = i + 7;
+        String car = Integer.toString(i);
+        car = "CAR" + car;
+        return car;
+    }
 	public double getSpeed() {
 		return this.speed;
 	}
@@ -323,6 +339,7 @@ public class Auto extends Thread {
 	}
 
 	public String getRoadIDSUMO() {
+		
 		return this.roadIDSUMO;
 	}
 
@@ -348,6 +365,15 @@ public class Auto extends Thread {
 	public void setAverageFuelConsumption(double _averageFuelConsumption) {
 		this.averageFuelConsumption = _averageFuelConsumption;
 	}
+	public String getIdRota(){
+		try {
+			return (String) sumo.do_job_get(Vehicle.getRoadID(autoID));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+
+	}
 	
-	  
 }

@@ -19,7 +19,7 @@ public class EnvSimulator extends Thread{//W mudar para Mobility
 
 		/* SUMO */
 		String sumo_bin = "sumo-gui";
-		String config_file = "map/map.sumo.cfg";
+		String config_file = "SIM-MAIN/map/map.sumo.cfg";
 		
 		// Sumo connection
 		this.sumo = new SumoTraciConnection(sumo_bin, config_file);

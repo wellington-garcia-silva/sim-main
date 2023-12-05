@@ -1,8 +1,8 @@
-package io.sim;
+package io.sim4;
 
-public class DrivingData {//Desta classe consigo informações para usar certo
+public class DrivingData {
 
-	/* SUMO's data */ 
+	/* SUMO's data */
 
 	private String autoID;
 	private String driverID;
@@ -35,7 +35,7 @@ public class DrivingData {//Desta classe consigo informações para usar certo
 	//private String fuelRegistrationDate; // Registration date (microseconds)
 
 	// Engine Data
-	//private double rpm; // Engine revolutions per minute (RPM)
+	//private double rpm; // Engine revolutions per minute (RPM) 
 	//private double co2; // Emitted Co2 level (g/s)
 	//private double load; // Engine mechanical load (%)
 	//private double fuel; // Instant fuel savings (km/l)
@@ -159,8 +159,6 @@ public class DrivingData {//Desta classe consigo informações para usar certo
 
 	}
 
-	
-
 	public double getSpeed() {
 		return this.speed;
 	}
@@ -169,7 +167,7 @@ public class DrivingData {//Desta classe consigo informações para usar certo
 		return this.odometer;
 	}
 
-	public double getFuelConsumption() {//Aqui está a informação que preciso para classe CAR
+	public double getFuelConsumption() {
 		return this.fuelConsumption;
 	}
 
@@ -177,7 +175,7 @@ public class DrivingData {//Desta classe consigo informações para usar certo
 		return this.co2Emission;
 	}
 
-	public double getX_Position() {//Posição que pede de Coordenadas ???
+	public double getX_Position() {
 		return this.x_Position;
 	}
 
